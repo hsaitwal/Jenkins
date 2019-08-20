@@ -7,9 +7,18 @@ pipeline {
         sleep 10
       }
     }
-    stage('Master') {
+    stage('Check Node status') {
       steps {
-        build(job: 'Test1', quietPeriod: 7, wait: true, propagate: true)
+        node(label: 'master') {
+          build(job: 'FRB_Revert_Server_Snapshot', quietPeriod: 90, wait: true)
+          echo 'Reverting is in Progress'
+        }
+
+      }
+    }
+    stage('End') {
+      steps {
+        echo 'End'
       }
     }
   }
